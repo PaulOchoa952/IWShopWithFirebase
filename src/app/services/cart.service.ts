@@ -64,11 +64,11 @@ export class CartService {
   public removeItemFromCart(item: CartItem): void {
     this.cartCollection.doc('user-cart').get().subscribe((cartSnapshot) => {
       const cart = cartSnapshot.data() as Cart || { items: [], total: 0, itemCount: 0 };
-
-      const index = cart.items.findIndex((cartItem) => cartItem === item);
+      
+      const index = cart.items.findIndex((cartItem) => cartItem.product.name === item.product.name);
       if (index !== -1) {
         cart.items.splice(index, 1);
-
+        console.log("Entro a removeItemFromCart");
         // Actualiza el total y la cantidad de artículos
         cart.total = this.calculateTotal(cart);
         cart.itemCount = this.calculateItemCount(cart);
